@@ -1,0 +1,6 @@
+
+public interface traverseConstants {
+
+	public static int XDIRECTION = 0;
+	public static int YDIRECTION = 1;
+}

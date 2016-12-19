@@ -42,20 +42,19 @@ public class Engine extends BasicGame {
         Input input = gc.getInput();
 
         // Update the player's movement direction based on keyboard presses.
-        double dir_x = 0;
-        double dir_y = 0;
+        double dirX = 0;
+        double dirY = 0;
         if (input.isKeyDown(Input.KEY_DOWN) || input.isKeyDown(Input.KEY_S))
-            dir_y += 1;
+            dirY += 1;
         if (input.isKeyDown(Input.KEY_UP) || input.isKeyDown(Input.KEY_W))
-            dir_y -= 1;
+            dirY -= 1;
         if (input.isKeyDown(Input.KEY_LEFT) || input.isKeyDown(Input.KEY_A))
-            dir_x -= 1;
+            dirX -= 1;
         if (input.isKeyDown(Input.KEY_RIGHT) || input.isKeyDown(Input.KEY_D))
-            dir_x += 1;
+            dirX += 1;
 
         // Let World.update decide what to do with this data.
-        //world.update(dir_x, dir_y, delta);
-        world.update();
+        world.update(dirX, dirY, delta);
     }
 
     /** Render the entire screen, so it reflects the current game state.

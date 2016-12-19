@@ -1,0 +1,67 @@
+import org.newdawn.slick.Image;
+
+public abstract class Entity implements traverseConstants {
+	
+	private double x;
+	private double y;
+	private float speed;
+	
+	private Image sprite;
+	
+	/**
+	 * 
+	 * @return Entity's x coordinate
+	 */
+	public double getX() { return x; }
+	
+	/**
+	 * Set Entity's x coordinate
+	 * @param x value to set x coordinate to
+	 */
+	public void setX(double x) { this.x = x; }
+	
+	/**
+	 * 
+	 * @return Entity's y coordinate
+	 */
+	public double getY(){ return y; }
+	
+	/**
+	 * Set Entity's y coordinate
+	 * @param y value to set y coordinate to
+	 */
+	public void setY(double y) { this.y = y; }
+	
+	/**
+	 * Set Entity's Coordinates
+	 * @param x value to set x coordinate to
+	 * @param y value to set y coordinate to
+	 */
+	public void setCoordinates(double x, double y) {
+		setX(x);
+		setY(y);
+	}
+	
+	/**
+	 * Sets Entity's movement speed
+	 * @param speed value to set speed to
+	 */
+	public void setSpeed(float speed) { this.speed = speed; }
+	
+	/**
+	 * 
+	 * @return Entity's movement speed
+	 */
+	public float getSpeed() { return speed; }
+	
+	
+	public void changePos(double dirX, double dirY, int delta) {
+		if (World.tileTraversable(x, y, dirX * delta * speed, XDIRECTION))
+			x += dirX * delta * speed;
+		if (World.tileTraversable(x, y, dirY * delta * speed, YDIRECTION))
+			y += dirY * delta * speed;
+	}
+	
+	public abstract void render();
+	public abstract void update();
+}

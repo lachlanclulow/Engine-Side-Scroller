@@ -1,0 +1,1 @@
+Basic engine for side scrolling shooter games, using slick2D libraries.

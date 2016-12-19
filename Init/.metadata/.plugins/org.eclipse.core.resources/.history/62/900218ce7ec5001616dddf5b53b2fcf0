@@ -1,0 +1,65 @@
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
+
+public class Player extends Unit {
+
+	private static double STARTX = 64;
+	private static double STARTY = 64;
+	private static String SPRITE_REF = "assets/PlayerSprite.png";
+	
+	private static float SPEED = 0.2f;
+	
+	/**
+	 *	Default constructor
+	 */
+	Player () throws SlickException {
+		super(STARTX, STARTY, SPRITE_REF, SPEED);
+	}
+	
+	/**
+	 *	@param x starting x coordinate
+	 *	@param y starting y coordinate
+	 * 	@throws SlickException 
+	 */
+	Player (double x, double y) throws SlickException {
+		super(x, y, SPRITE_REF, SPEED);
+	}
+	
+	
+	/**
+	 *	@param x starting x coordinate
+	 *	@param y starting y coordinate
+	 *	@param spriteRef file reference of sprite file
+	 */
+	Player (float x, float y, String spriteRef) throws SlickException
+	{
+		super(x, y, spriteRef, SPEED);
+	}
+
+	public void update(double dirX, double dirY, int delta) {
+		x += dirX * delta * speed;
+		y += dirY * delta * speed;
+		
+	}
+	
+	private void gravity() {
+		
+	}
+	
+	/**
+	 * 
+	 * @return unit's x coordinate
+	 */
+	public double getX() {
+		return x;
+	}
+	
+	/**
+	 * 
+	 * @return unit's y coordinate
+	 */
+	public double getY() {
+		return y;
+	}
+	
+}

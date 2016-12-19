@@ -1,0 +1,17 @@
+import org.newdawn.slick.Image;
+
+public abstract class Entity {
+	
+	private double x;
+	private double y;
+	
+	private Image sprite;
+	
+	public abstract double getX() {
+		return x;
+	}
+
+	public void setX(double x) {
+		this.x = x;
+	}
+}

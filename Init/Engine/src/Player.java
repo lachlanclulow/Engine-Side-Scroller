@@ -1,0 +1,51 @@
+import org.newdawn.slick.SlickException;
+
+public class Player extends Unit {
+
+	private static double STARTX = 64;
+	private static double STARTY = 64;
+	private static String SPRITE_REF = "assets/PlayerSprite.png";
+	
+	private static float SPEED = 0.2f;
+	
+	/**
+	 *	Default constructor
+	 */
+	Player () throws SlickException {
+		super(STARTX, STARTY, SPRITE_REF, SPEED);
+	}
+	
+	/**
+	 *	@param x starting x coordinate
+	 *	@param y starting y coordinate
+	 * 	@throws SlickException 
+	 */
+	Player (double x, double y) throws SlickException {
+		super(x, y, SPRITE_REF, SPEED);
+	}
+	
+	
+	/**
+	 *	@param x starting x coordinate
+	 *	@param y starting y coordinate
+	 *	@param spriteRef file reference of sprite file
+	 */
+	Player (float x, float y, String spriteRef) throws SlickException
+	{
+		super(x, y, spriteRef, SPEED);
+	}
+
+	/**
+	 * Updates the players state
+	 * 
+	 * @param dirX direction of movement in the x axis
+	 * @param dirY direction of movement in the y axis
+	 * @param delta time passed since last frame (milliseconds)
+	 */
+	@Override
+	public void update(double dirX, double dirY, int delta) {
+		super.update(dirX, dirY, delta);
+		changePos(dirX, dirY, delta);
+	}
+	
+}

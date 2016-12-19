@@ -1,0 +1,49 @@
+import org.newdawn.slick.Image;
+
+public abstract class Entity {
+	
+	private double x;
+	private double y;
+	
+	private Image sprite;
+	
+	/**
+	 * 
+	 * @return Entity's x coordinate
+	 */
+	public double getX() {
+		return x;
+	}
+	
+	/**
+	 * Set Entity's x coordinate
+	 * @param x value to set x coordinate to
+	 */
+	public void setX(double x) {
+		this.x = x;
+	}
+	
+	/**
+	 * 
+	 * @return Entity's y coordinate
+	 */
+	public double getY(){
+		return y;
+	}
+	
+	/**
+	 * Set Entity's y coordinate
+	 * @param y value to set y coordinate to
+	 */
+	public void setY(double y) {
+		this.y = y;
+	}
+	
+	public void setCoordinates(double x, double y) {
+		setX(x);
+		setY(y);
+	}
+	
+	public abstract void render();
+	public abstract void update();
+}

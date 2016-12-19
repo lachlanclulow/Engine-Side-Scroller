@@ -1,0 +1,29 @@
+
+public class Player {
+
+	private static int STARTX = 10;
+	private static int STARTY = 10;
+	
+	/*	Player's x coordinate	*/
+	private int x;
+	/*	Player's y coordinate	*/
+	private int y;
+	
+	/*
+	 * Default constructor
+	 */
+	Player () {
+		x = STARTX;
+		y = STARTY;
+	}
+	
+	/*
+	 * @param x starting x coordinate
+	 * @param y starting y coordinate
+	 */
+	Player (int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
+	
+}
