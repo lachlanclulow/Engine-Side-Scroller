@@ -1,0 +1,126 @@
+import java.util.ArrayList;
+
+public class BoxCollider {
+	
+	/**	Sorting constants	*/
+	private static final int LESS = -1;
+	private static final int EQUAL = 0;
+	private static final int GREATER = 1;
+	
+	private static ArrayList<BoxCollider> Colliders;
+	
+	/**	Collider's x coordinate	*/
+	private double x;
+	/**	Collider's y coordinate	*/
+	private double y;
+	/**	Collider's height dimension	*/
+	private double height;
+	/** Collider's width dimension	*/
+	private double width;
+	
+	/**	Basic constructor
+	 * 
+	 * @param x x coordinate of centre point
+	 * @param y y coordinate of centre point
+	 * @param height collider height dimension
+	 * @param width collider width dimension
+	 */
+	BoxCollider(double x, double y, double height, double width) {
+		setCoordinates(x, y);
+		setDimensions(height, width);
+		Colliders.add(this);
+	}
+	
+	/**	Sets x and y coordinates
+	 * 
+	 * @param x x coordinate of collider
+	 * @param y y coordinate of collider
+	 */
+	public void setCoordinates(double x, double y) {
+		this.x = x;
+		this.y = y;
+	}
+	
+	/** Set dimensions of a box collider
+	 * 
+	 * @param height height dimension
+	 * @param width width dimension
+	 */
+	public void setDimensions(double height, double width) {
+		this.height = height;
+		this.width = width;
+	}
+	
+	/**
+	 * @return x coordinate of collider
+	 */
+	public double getX() { return x; }
+	
+	/**
+	 * @return y coordinate of collider
+	 */
+	public double getY() { return y; }
+	
+	/**
+	 * @return height of collider
+	 */
+	public double getHeight() { return height; }
+	
+	/**
+	 * @return width of collider
+	 */
+	public double getWidth() { return width; }
+	
+	/**
+	 * @return arraylist of all colliders
+	 */
+	public ArrayList<BoxCollider> getColliders() { return Colliders; }
+	
+	/**	Checks if a collider is intersecting with another collider
+	 * 
+	 * @param collider collider to compare to
+	 * @return true if collision, false if not
+	 */
+	public boolean collision(BoxCollider collider) {
+		double xMin1 = x - width/2.0;
+		double xMax1 = x + width/2.0;
+		double yMin1 = y - height/2.0;
+		double yMax1 = y + height/2.0;
+		double xMin2 = collider.getX() - collider.getWidth()/2.0;
+		double xMax2 = collider.getX() + collider.getWidth()/2.0;
+		double yMin2 = collider.getY() - collider.getHeight()/2.0;
+		double yMax2 = collider.getY() + collider.getHeight()/2.0;
+		
+		return !((xMin1 <= xMax2 || xMax1 >= xMin2) &&
+		(yMin1 <= yMax2 || yMax1 >= yMin2));
+	}
+	
+	/**	Compares two boxcolliders for sorting purposes
+	 * 
+	 * @param collider collider to be compared to
+	 * @return -1 for less than, 0 for equal, 1 for greater
+	 */
+	private int compare(BoxCollider collider) {
+		int thisY = (int) this.getY();
+		int otherY = (int) collider.getY();
+		
+		// Check y bounds
+		if (thisY < otherY)
+			return LESS;
+		if (thisY == otherY) {
+			// Check x bounds
+			int thisX = (int) this.getX();
+			int otherX = (int) collider.getX();
+			
+			if (thisX < otherX)
+				return LESS;
+			if (thisX == otherX)
+				return EQUAL;
+		}
+		return GREATER;	
+	}
+	
+	public static boolean isColliding() {
+		return true;
+	}
+}

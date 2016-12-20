@@ -1,0 +1,125 @@
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.tiled.TiledMap;
+
+public abstract class BaseWorld implements traverseConstants {
+
+	protected static TiledMap map;
+	protected Player player;
+	
+	public abstract void update(double dirX, double dirY, int delta);
+	public abstract void render(Graphics g);
+
+	
+	/** 
+	 *  Evaluates whether a tile to be embarked on is traversable
+	 *  
+	 *  @param map TiledMap object on which tiles are being traversed
+	 *  @param travelDistance the distance travelled from the players 
+	 *  current x or y coordinate
+	 *  @param direction 0 for travel in the x direction, 1 for travel in 
+	 *  y direction
+	 */
+	public static boolean tileTraversable(double xCoord, double yCoord, 
+			double travelDistance, int direction)
+	{
+		int id;
+		String result = "0";
+	
+		// for x direction
+		if (direction == XDIRECTION) {
+			// Check x coordinate is on the map
+			if (xCoord + travelDistance <= 1 || 
+					xCoord + travelDistance >= 
+					map.getWidth() * map.getTileWidth())
+				return false;
+
+			// Check tile is traversable
+			id = map.getTileId(
+					(int) Math.floor(
+							(xCoord + travelDistance)/map.getTileWidth()),
+					(int) Math.floor(yCoord/map.getTileHeight()), 0);
+			result = map.getTileProperty(id, "block", "0");
+		}
+		// for y direction
+		else if (direction == YDIRECTION){
+			// Check y coordinate is on the map
+			if (yCoord + travelDistance <= 1 ||
+					yCoord + travelDistance >=
+					map.getHeight() * map.getTileHeight())
+				return false;
+
+			// Check tile is traversable
+			id = map.getTileId(
+					(int) Math.floor(xCoord/map.getTileWidth()),
+					(int) Math.floor(
+							(yCoord + travelDistance)/map.getTileHeight()), 0);
+			result = map.getTileProperty(id, "block", "0");
+		}
+		
+		if (result.equals("1"))
+			return false;
+		return true;
+	}
+	
+	public static boolean tileTraversable(BoxCollider col, 
+			double travelDistance, int direction) {
+		int id = 0;
+		String result = "0";
+		
+		// for x direction
+		if (direction == XDIRECTION) {
+			// Check collider bounds are on the map
+			if (col.getX() + travelDistance <= 1 || 
+					col.getX() + col.getWidth() + travelDistance >= 
+					map.getWidth() * map.getTileWidth())
+				return false;
+
+			// Check tile is traversable
+			if (travelDistance <= 0) { 
+				id = map.getTileId(
+						(int) Math.floor(
+								(col.getX() - col.getWidth()/2.0 + travelDistance)/map.getTileWidth()),
+						(int) Math.floor(col.getY()/map.getTileHeight()), 0);
+			}
+			else {
+				id = map.getTileId(
+						(int) Math.floor(
+								(col.getX() + col.getWidth()/2.0 + travelDistance)/map.getTileWidth()),
+						(int) Math.floor(col.getY()/map.getTileHeight()), 0);
+				id = edgeCheck(col.getX(), col.getWidth()/2.0, col.getY(), 0, travelDistance, 0);
+			}
+		}
+		// for y direction
+		else if (direction == YDIRECTION){
+			// Check y coordinate is on the map
+			if (col.getY() + travelDistance <= 1 ||
+					col.getY() + travelDistance >=
+					map.getHeight() * map.getTileHeight())
+				return false;
+
+			// Check tile is traversable
+			if (travelDistance <= 0) {
+				id = edgeCheck(col.getX(), 0, col.getY(), - col.getHeight()/2.0, 0, travelDistance);
+			}
+			else {
+				id = edgeCheck(col.getX(), 0, col.getY(), col.getHeight()/2.0, 0, travelDistance);
+			}
+		}
+		
+		result = map.getTileProperty(id, "block", "0");
+		if (result.equals("1"))
+			return false;
+		return true;
+		
+	}
+	
+	private static int edgeCheck(double x, double xOffset, double y, double yOffset,
+			double xTravelDistance, double yTravelDistance) {
+		return map.getTileId(
+				(int) Math.floor(
+						(x + xOffset + xTravelDistance)/map.getTileWidth()),
+				(int) Math.floor(
+						(y + yOffset + yTravelDistance)/map.getTileHeight()), 0);
+	}
+	
+}

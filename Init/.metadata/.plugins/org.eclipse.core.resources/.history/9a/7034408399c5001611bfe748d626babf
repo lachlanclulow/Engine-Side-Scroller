@@ -1,0 +1,40 @@
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
+
+public class Unit extends Entity implements traverseConstants {
+	
+	/** Unit's default speed	*/
+	private static float DefSpeed = 0.2f;
+	/** A vertically flipped copy of the sprite image	*/
+	private Image spriteFlipped;
+	
+	/**
+	 *	@param x starting x coordinate
+	 *	@param y starting y coordinate
+	 *	@param spriteRef file reference of sprite file
+	 */
+	Unit(double x, double y, String spriteRef, float speed) throws SlickException
+	{
+		setCoordinates(x, y);
+		setSprite(spriteRef);
+		spriteFlipped = getSprite().getFlippedCopy(false, true);
+		setSpeed(speed);
+	}
+	
+	public void render() {
+		getSprite().draw((float) x, (float) y);
+	}
+
+	public void update(double dirX, double dirY, int delta) {
+		
+	}
+
+	@Override
+	public void update() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
+	
+}

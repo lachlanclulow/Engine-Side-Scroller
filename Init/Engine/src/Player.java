@@ -1,3 +1,4 @@
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
 public class Player extends Unit {
@@ -24,7 +25,6 @@ public class Player extends Unit {
 		super(x, y, SPRITE_REF, SPEED);
 	}
 	
-	
 	/**
 	 *	@param x starting x coordinate
 	 *	@param y starting y coordinate
@@ -43,9 +43,13 @@ public class Player extends Unit {
 	 * @param delta time passed since last frame (milliseconds)
 	 */
 	@Override
-	public void update(double dirX, double dirY, int delta) {
-		super.update(dirX, dirY, delta);
-		changePos(dirX, dirY, delta);
+	public void update(double dirX, double dirY, boolean jump, int delta) {
+		super.update(dirX, dirY, jump, delta);
+	}
+
+	@Override
+	public void render(Graphics g) {
+		super.render();
 	}
 	
 }

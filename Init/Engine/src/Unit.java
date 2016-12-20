@@ -1,18 +1,24 @@
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
-public class Unit extends Entity implements traverseConstants {
+public abstract class Unit extends Entity implements traverseConstants, Physics {
 	
-	/*	Unit's x coordinate	*/
-	private double x;
-	/*	Unit's y coordinate	*/
-	private double y;
+	private static final double JUMP_VELOCITY = 0.5;
+	
+	/**	Entity's movement speed	*/
 	private float speed;
-	
-	private static float DefSpeed = 0.2f;
-	
+	/**	Entity's image representation	*/
 	private Image sprite;
-	private Image spriteFlipped;	
+	/**	Height of sprite image in pixels	*/
+	private int spriteHeight;
+	/**	Width of sprite image in pixels	*/
+	private int spriteWidth;
+	/**	Speed Entity is moving in the vertical direction	*/
+	private double velocity;
+	/** Unit's default speed	*/
+	private static float DefSpeed = 0.2f;
+	/** A vertically flipped copy of the sprite image	*/
+	private Image spriteFlipped;
 	
 	/**
 	 *	@param x starting x coordinate
@@ -21,28 +27,103 @@ public class Unit extends Entity implements traverseConstants {
 	 */
 	Unit(double x, double y, String spriteRef, float speed) throws SlickException
 	{
-		this.x = x;
-		this.y = y;
+		super(x, y);
+		setSprite(spriteRef);
+		spriteFlipped = getSprite().getFlippedCopy(false, true);
+		setSpeed(speed);
+		setColliderDimensions(sprite.getWidth(), sprite.getHeight());
+	}
+	
+	/**
+	 * Sets Entity's movement speed
+	 * @param speed value to set speed to
+	 */
+	public void setSpeed(float speed) { this.speed = speed; }
+	
+	/**
+	 * @return Entity's movement speed
+	 */
+	public float getSpeed() { return speed; }
+	
+	/**
+	 * Set Entity's image representation
+	 * @param spriteRef File reference of sprite file
+	 * @throws SlickException
+	 */
+	public void setSprite(String spriteRef) throws SlickException { 
 		sprite = new Image(spriteRef);
-		spriteFlipped = sprite.getFlippedCopy(false, true);
-		this.speed = speed;
+		spriteHeight = sprite.getHeight();
+		spriteWidth = sprite.getWidth();
 	}
 	
+	/**
+	 * @return Unit's image representation
+	 */
+	public Image getSprite() { return sprite; }
+	
+	/**
+	 * @return Height in pixels of the Unit sprite image
+	 */
+	public int getSpriteHeight() { return spriteHeight; }
+	
+	/**
+	 * @return Width in pixels of the Unit sprite image
+	 */
+	public int getSpriteWidth() { return spriteWidth; }
+	
+	/**
+	 * Changes an Unit's position based on movement direction
+	 * 
+	 * @param dirX direction of movement in x axis
+	 * @param dirY direction of movement in y axis
+	 * @param delta time passed since last frame (milliseconds)
+	 */
+	public void changePos(double dirX, double dirY, int delta) {
+		double moveX = 0.0;
+		double moveY = 0.0;
+		if (World.tileTraversable(getCollider(), dirX * delta * speed, XDIRECTION))
+			moveX = dirX * delta * speed;
+		if (World.tileTraversable(getCollider(), delta * -velocity, YDIRECTION))
+			moveY = delta * -velocity;
+		else
+			velocity = 0.0;
+		super.changePos(moveX, moveY);
+	}
+	
+	/**
+	 * Render the sprite to the screen
+	 */
 	public void render() {
-		sprite.draw((float) x, (float) y);
+		renderCollider();
+		getSprite().draw((float) (getX() - sprite.getWidth()/2.0), 
+				(float) (getY() - sprite.getHeight()/ 2.0));
 	}
 
-	public void update(double dirX, double dirY, int delta) {
-	}
-	
-	private void gravity() {
-		
+	/**
+	 * Update Unit's game state applies physics
+	 * @param dirX direction of movement in the x direction
+	 * @param dirY direction of movement in the y direction
+	 * @param delta time passed since last frame (milliseconds)
+	 */
+	public void update(double dirX, double dirY, boolean jump, int delta) {
+		if (jump)
+			jump();
+		velocity = vertAccelerate(velocity, delta);
+		System.out.println(velocity);
+		changePos(dirX, dirY, delta);
 	}
 
+	/** Update units Game state	*/
 	@Override
 	public void update() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	/** Gives unit upward velocity to be affected by physics*/
+	private void jump() {
+		if (velocity == 0.0)
+			velocity = JUMP_VELOCITY;
 	}
 	
 	

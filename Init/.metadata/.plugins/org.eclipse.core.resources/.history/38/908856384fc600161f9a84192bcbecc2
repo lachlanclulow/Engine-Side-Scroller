@@ -1,0 +1,68 @@
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
+
+public abstract class Entity implements traverseConstants, Physics {
+	
+	/**	Entity's x coordinate	*/
+	private double x;
+	/**	Entity's y coordinate	*/
+	private double y;
+	/** Box collider of entity 	*/
+	private BoxCollider collider;
+	
+	Entity(double x, double y) {
+		setCoordinates(x, y);
+		BoxCollider(Entity)
+	}
+	
+	/**
+	 * @return Entity's x coordinate
+	 */
+	public double getX() { return x; }
+	
+	/**
+	 * Set Entity's x coordinate
+	 * @param x value to set x coordinate to
+	 */
+	public void setX(double x) { this.x = x; }
+	
+	/**
+	 * @return Entity's y coordinate
+	 */
+	public double getY(){ return y; }
+	
+	/**
+	 * Set Entity's y coordinate
+	 * @param y value to set y coordinate to
+	 */
+	public void setY(double y) { this.y = y; }
+	
+	/**
+	 * Set Entity's Coordinates
+	 * @param x value to set x coordinate to
+	 * @param y value to set y coordinate to
+	 */
+	public void setCoordinates(double x, double y) {
+		setX(x);
+		setY(y);
+	}
+	
+	/**
+	 * Changes an Entity's position based on movement direction
+	 * 
+	 * @param dirX direction of movement in x axis
+	 * @param dirY direction of movement in y axis
+	 * @param delta time passed since last frame (milliseconds)
+	 */
+	public void changePos(double moveX, double moveY) {
+		x += moveX;
+		y += moveY;
+	}
+	
+	/**	Render Entity on the screen	*/
+	public abstract void render(Graphics g);
+	
+	/** Update Entity's game state	*/
+	public abstract void update();
+}

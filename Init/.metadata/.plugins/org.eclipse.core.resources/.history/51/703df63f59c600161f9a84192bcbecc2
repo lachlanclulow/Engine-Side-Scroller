@@ -1,0 +1,40 @@
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
+
+public abstract class Entity extends Point implements traverseConstants, Physics {
+	
+	/** Box collider of entity 	*/
+	private BoxCollider collider;
+	
+	Entity(double x, double y) {
+		super(x, y);
+		collider = new BoxCollider(this);
+	}
+	
+	/** Set box colliders dimensions
+	 * 
+	 * @param width width of box collider
+	 * @param height height of box collider
+	 */
+	public void setColliderDimensions(double width, double height) {
+		collider.setDimensions(height, width);
+	}
+	
+	public void renderCollider() {
+		collider.render();
+	}
+	
+	
+	@Override
+	public void changePos(double moveX, double moveY) {
+		super.changePos(moveX, moveY);
+		collider.changePos(moveX, moveY);
+	}
+	
+	/**	Render Entity on the screen	*/
+	public abstract void render(Graphics g);
+	
+	/** Update Entity's game state	*/
+	public abstract void update();
+}

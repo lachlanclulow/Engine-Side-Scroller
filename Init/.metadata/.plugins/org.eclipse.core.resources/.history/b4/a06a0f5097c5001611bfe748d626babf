@@ -1,0 +1,12 @@
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.tiled.TiledMap;
+
+public abstract class BaseWorld {
+
+	protected static TiledMap map;
+	protected Player player;
+	
+	public abstract void update(double dirX, double dirY, int delta);
+	public abstract void render(Graphics g)
+	
+}

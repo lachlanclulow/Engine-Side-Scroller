@@ -44,6 +44,7 @@ public class Engine extends BasicGame {
         // Update the player's movement direction based on keyboard presses.
         double dirX = 0;
         double dirY = 0;
+        boolean jump = false;
         if (input.isKeyDown(Input.KEY_DOWN) || input.isKeyDown(Input.KEY_S))
             dirY += 1;
         if (input.isKeyDown(Input.KEY_UP) || input.isKeyDown(Input.KEY_W))
@@ -52,9 +53,11 @@ public class Engine extends BasicGame {
             dirX -= 1;
         if (input.isKeyDown(Input.KEY_RIGHT) || input.isKeyDown(Input.KEY_D))
             dirX += 1;
+        if (input.isKeyDown(Input.KEY_SPACE))
+        	jump = true;
 
         // Let World.update decide what to do with this data.
-        world.update(dirX, dirY, delta);
+        world.update(dirX, dirY, jump,  delta);
     }
 
     /** Render the entire screen, so it reflects the current game state.

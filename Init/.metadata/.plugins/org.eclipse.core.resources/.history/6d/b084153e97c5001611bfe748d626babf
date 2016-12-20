@@ -1,0 +1,8 @@
+import org.newdawn.slick.tiled.TiledMap;
+
+public abstract class BaseWorld {
+
+	protected static TiledMap map;
+	protected Player player;
+	
+}

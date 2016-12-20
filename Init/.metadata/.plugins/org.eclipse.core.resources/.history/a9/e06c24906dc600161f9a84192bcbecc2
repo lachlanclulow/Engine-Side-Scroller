@@ -1,0 +1,22 @@
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.tiled.TiledMap;
+
+public class World extends BaseWorld implements traverseConstants {
+	
+	private static final String MAP_REF = "assets/testMap.tmx";
+	
+	World() throws SlickException {
+		map = new TiledMap(MAP_REF);
+		player = new Player();
+	}
+	
+	public void update(double dirX, double dirY, int delta) {
+		player.update(dirX, dirY, delta);
+	}
+	
+	public void render(Graphics g) {
+		map.render(0, 0);
+		player.render();
+	}	
+}

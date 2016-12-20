@@ -1,0 +1,27 @@
+import org.newdawn.slick.Graphics;
+
+public class Tile extends Entity {
+
+	Tile(double x, double y) {
+		super(x, y);
+	}
+	
+	@Override
+	public void render(Graphics g) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void update() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void render() {
+		// TODO Auto-generated method stub
+
+	}
+
+}

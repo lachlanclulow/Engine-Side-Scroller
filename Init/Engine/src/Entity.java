@@ -1,76 +1,44 @@
-import org.newdawn.slick.Image;
+import org.newdawn.slick.Graphics;
 
-public abstract class Entity implements traverseConstants {
+public abstract class Entity extends Point {
 	
-	private double x;
-	private double y;
-	private float speed;
+	/** Box collider of entity 	*/
+	private BoxCollider collider;
 	
-	private Image sprite;
+	Entity(double x, double y) {
+		super(x, y);
+		collider = new BoxCollider(this);
+	}
 	
-	/**
+	/** Set box colliders dimensions
 	 * 
-	 * @return Entity's x coordinate
+	 * @param width width of box collider
+	 * @param height height of box collider
 	 */
-	public double getX() { return x; }
+	public void setColliderDimensions(double width, double height) {
+		collider.setDimensions(height, width);
+	}
 	
-	/**
-	 * Set Entity's x coordinate
-	 * @param x value to set x coordinate to
-	 */
-	public void setX(double x) { this.x = x; }
+	public void renderCollider() {
+		collider.render();
+	}
 	
-	/**
-	 * 
-	 * @return Entity's y coordinate
-	 */
-	public double getY(){ return y; }
 	
-	/**
-	 * Set Entity's y coordinate
-	 * @param y value to set y coordinate to
-	 */
-	public void setY(double y) { this.y = y; }
-	
-	/**
-	 * Set Entity's Coordinates
-	 * @param x value to set x coordinate to
-	 * @param y value to set y coordinate to
-	 */
-	public void setCoordinates(double x, double y) {
-		setX(x);
-		setY(y);
+	@Override
+	public void changePos(double moveX, double moveY) {
+		super.changePos(moveX, moveY);
+		collider.changePos(moveX, moveY);
 	}
 	
 	/**
-	 * Sets Entity's movement speed
-	 * @param speed value to set speed to
+	 * @return The Entity's box collider
 	 */
-	public void setSpeed(float speed) { this.speed = speed; }
-	
-	/**
-	 * 
-	 * @return Entity's movement speed
-	 */
-	public float getSpeed() { return speed; }
-	
-	/**
-	 * Changes an Entity's position based on movement direction
-	 * 
-	 * @param dirX direction of movement in x axis
-	 * @param dirY direction of movement in y axis
-	 * @param delta time passed since last frame (milliseconds)
-	 */
-	public void changePos(double dirX, double dirY, int delta) {
-		if (World.tileTraversable(x, y, dirX * delta * speed, XDIRECTION))
-			x += dirX * delta * speed;
-		if (World.tileTraversable(x, y, dirY * delta * speed, YDIRECTION))
-			y += dirY * delta * speed;
-	}
+	public BoxCollider getCollider() { return collider; }
 	
 	/**	Render Entity on the screen	*/
-	public abstract void render();
+	public abstract void render(Graphics g);
 	
 	/** Update Entity's game state	*/
 	public abstract void update();
+
 }

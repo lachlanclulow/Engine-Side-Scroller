@@ -1,0 +1,4 @@
+
+public class CollidableObjects {
+	private static ArrayList<CollidableObjects> Colliders;
+}
