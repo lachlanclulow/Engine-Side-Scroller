@@ -1,7 +1,13 @@
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
-public abstract class Unit extends Entity implements traverseConstants {
+public abstract class Unit 
+extends Entity 
+implements traverseConstants, Physics 
+{
+	
+	/**	Initial velocity of a unit at jump	*/
+	private static final double JUMP_VELOCITY = 0.5;
 	
 	/**	Entity's movement speed	*/
 	private float speed;
@@ -13,10 +19,10 @@ public abstract class Unit extends Entity implements traverseConstants {
 	private int spriteWidth;
 	/**	Speed Entity is moving in the vertical direction	*/
 	private double velocity;
-	/** Unit's default speed	*/
-	private static float DefSpeed = 0.2f;
 	/** A vertically flipped copy of the sprite image	*/
 	private Image spriteFlipped;
+	/**	If the unit is facing right	*/
+	private boolean facingRight = true;
 	
 	/**
 	 *	@param x starting x coordinate
@@ -27,7 +33,7 @@ public abstract class Unit extends Entity implements traverseConstants {
 	{
 		super(x, y);
 		setSprite(spriteRef);
-		spriteFlipped = getSprite().getFlippedCopy(false, true);
+		spriteFlipped = getSprite(facingRight).getFlippedCopy(false, true);
 		setSpeed(speed);
 		setColliderDimensions(sprite.getWidth(), sprite.getHeight());
 	}
@@ -55,22 +61,26 @@ public abstract class Unit extends Entity implements traverseConstants {
 	}
 	
 	/**
-	 * @return Entity's image representation
+	 * @return Unit's image representation
 	 */
-	public Image getSprite() { return sprite; }
+	public Image getSprite(boolean facingRight) { 
+		if (facingRight)
+			return sprite;
+		return spriteFlipped;
+		}
 	
 	/**
-	 * @return Height in pixels of the Entity sprite image
+	 * @return Height in pixels of the Unit sprite image
 	 */
 	public int getSpriteHeight() { return spriteHeight; }
 	
 	/**
-	 * @return Width in pixels of the Entity sprite image
+	 * @return Width in pixels of the Unit sprite image
 	 */
 	public int getSpriteWidth() { return spriteWidth; }
 	
 	/**
-	 * Changes an Entity's position based on movement direction
+	 * Changes an Unit's position based on movement direction
 	 * 
 	 * @param dirX direction of movement in x axis
 	 * @param dirY direction of movement in y axis
@@ -79,38 +89,59 @@ public abstract class Unit extends Entity implements traverseConstants {
 	public void changePos(double dirX, double dirY, int delta) {
 		double moveX = 0.0;
 		double moveY = 0.0;
-		if (World.tileTraversable(getX(), getY(), dirX * delta * speed, XDIRECTION))
+		if (World.tileTraversable(getCollider(), dirX * delta * speed, XDIRECTION))
 			moveX = dirX * delta * speed;
-		if (World.tileTraversable(getX(), getY(), dirY * delta * speed, YDIRECTION))
-			moveY = dirY * delta * speed;
+		if (World.tileTraversable(getCollider(), delta * -velocity, YDIRECTION))
+			moveY = delta * -velocity;
+		else
+			velocity = 0.0;
 		super.changePos(moveX, moveY);
 	}
 	
 	/**
-	 * Render the srite to the screen
+	 * Render the sprite to the screen
 	 */
-	public void render(Graphics g) {
-		getSprite().draw((float) getX() - ((float)getSpriteWidth())/2.0f, 
-				(float) getY() - (float) getSpriteHeight());
-		renderCollider(g);
+	public void render() {
+		renderCollider();
+		getSprite(facingRight).draw((float) (getX() - sprite.getWidth()/2.0), 
+				(float) (getY() - sprite.getHeight()/ 2.0));
 	}
 
 	/**
-	 * Update Unit's game state
+	 * Update Unit's game state applies physics
 	 * @param dirX direction of movement in the x direction
 	 * @param dirY direction of movement in the y direction
 	 * @param delta time passed since last frame (milliseconds)
 	 */
-	public void update(double dirX, double dirY, int delta) {
+	public void update(double dirX, double dirY, boolean jump, int delta) {
+		if (jump)
+			jump();
+		velocity = vertAccelerate(velocity, delta);
+		System.out.println(velocity);
 		changePos(dirX, dirY, delta);
 	}
+	
+	/**	Makes the unit face left	*/
+	public void faceLeft() {
+		facingRight = false;
+	}
+	
+	/** Makes the unit face right	*/
+	public void faceRight() {
+		facingRight = true;
+	}
 
+	/** Update units Game state	*/
 	@Override
 	public void update() {
 		// TODO Auto-generated method stub
 		
 	}
 	
-	
+	/** Gives unit upward velocity to be affected by physics	*/
+	private void jump() {
+		if (velocity == 0.0)
+			velocity = JUMP_VELOCITY;
+	}
 	
 }

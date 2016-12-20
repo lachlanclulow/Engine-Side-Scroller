@@ -5,6 +5,7 @@ public abstract class Unit
 extends Entity 
 implements traverseConstants, Physics 
 {
+	
 	/**	Initial velocity of a unit at jump	*/
 	private static final double JUMP_VELOCITY = 0.5;
 	
@@ -32,7 +33,7 @@ implements traverseConstants, Physics
 	{
 		super(x, y);
 		setSprite(spriteRef);
-		spriteFlipped = getSprite(facingRight).getFlippedCopy(true, false);
+		spriteFlipped = getSprite(facingRight).getFlippedCopy(false, true);
 		setSpeed(speed);
 		setColliderDimensions(sprite.getWidth(), sprite.getHeight());
 	}
@@ -66,7 +67,7 @@ implements traverseConstants, Physics
 		if (facingRight)
 			return sprite;
 		return spriteFlipped;
-	}
+		}
 	
 	/**
 	 * @return Height in pixels of the Unit sprite image
@@ -102,14 +103,19 @@ implements traverseConstants, Physics
 	}
 	
 	/**	Makes the unit face left	*/
-	public void faceLeft() { facingRight = false; }
+	public void faceLeft() {
+		facingRight = false;
+	}
 	
 	/** Makes the unit face right	*/
-	public void faceRight() { facingRight = true; }
+	public void faceRight() {
+		facingRight = true;
+	}
 
 	/** Update units Game state	*/
 	@Override
-	public void update() {}
+	public void update() {	
+	}
 	
 	
 	/**
@@ -120,11 +126,6 @@ implements traverseConstants, Physics
 	 * @param delta time passed since last frame (milliseconds)
 	 */
 	private void changePos(double dirX, double dirY, int delta) {
-		if (dirX > 0)
-			faceRight();
-		else if (dirX < 0)
-			faceLeft();
-		
 		double moveX = 0.0;
 		double moveY = 0.0;
 		if (World.tileTraversable(getCollider(), dirX * delta * speed, XDIRECTION))

@@ -10,9 +10,9 @@ public class Engine extends BasicGame {
 	public World world;
 	
     /** Screen width, in pixels. */
-    public static final int screenwidth = 1920;
+    public static final int screenwidth = 800;
     /** Screen height, in pixels. */
-    public static final int screenheight = 1080;
+    public static final int screenheight = 600;
 
     /** Create a new RPG object. */
     public Engine()

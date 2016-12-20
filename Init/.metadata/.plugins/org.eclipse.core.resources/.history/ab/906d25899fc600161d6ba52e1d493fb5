@@ -32,7 +32,7 @@ implements traverseConstants, Physics
 	{
 		super(x, y);
 		setSprite(spriteRef);
-		spriteFlipped = getSprite(facingRight).getFlippedCopy(true, false);
+		spriteFlipped = getSprite(facingRight).getFlippedCopy(false, true);
 		setSpeed(speed);
 		setColliderDimensions(sprite.getWidth(), sprite.getHeight());
 	}
@@ -120,9 +120,9 @@ implements traverseConstants, Physics
 	 * @param delta time passed since last frame (milliseconds)
 	 */
 	private void changePos(double dirX, double dirY, int delta) {
-		if (dirX > 0)
+		if (dirX >= 0)
 			faceRight();
-		else if (dirX < 0)
+		else
 			faceLeft();
 		
 		double moveX = 0.0;

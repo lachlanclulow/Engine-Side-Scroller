@@ -32,7 +32,7 @@ implements traverseConstants, Physics
 	{
 		super(x, y);
 		setSprite(spriteRef);
-		spriteFlipped = getSprite(facingRight).getFlippedCopy(true, false);
+		spriteFlipped = getSprite(facingRight).getFlippedCopy(false, true);
 		setSpeed(speed);
 		setColliderDimensions(sprite.getWidth(), sprite.getHeight());
 	}
